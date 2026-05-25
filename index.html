@@ -385,8 +385,8 @@ const EXAM_DATA = {
       { part:'腰椎', normal:5, unit:'块', nd:'人类腰椎为5块（L1-L5），承重最大。某些人可有腰椎骶化或骶椎腰化导致数目改变。', ad:'患者有{0}块腰椎——腰椎数目异常，脊柱承重结构不同！' },
       { part:'指骨（双手）', normal:28, unit:'块', nd:'每只手14块指骨。拇指2块（近节+远节），其余四指各3块，双手共28块。', ad:'患者双手只有{0}块指骨——手指关节分节数目异常！' },
       { part:'腕骨（双手）', normal:16, unit:'块', nd:'每只手8块腕骨：舟骨、月骨、三角骨、豌豆骨、大多角骨、小多角骨、头状骨、钩骨。双手16块。', ad:'患者双手有{0}块腕骨——腕骨排列方式异于人类！' },
-      { part:'牙齿', normal:32, unit:'颗', ageMap:{0:20,12:28,18:32}, nd:'人类{age}岁牙齿约{at}颗（儿童乳牙20颗，换牙期混合，成人恒牙28~32颗）。', ad:'患者有{0}颗牙齿——对{age}岁来说齿式异常！' },
-      { part:'全身骨骼', normal:206, unit:'块', ageMap:{0:270,12:206}, nd:'人类{age}岁全身骨骼约{at}块（儿童未融合约270块，成人206块）。', ad:'患者全身只有{0}块骨骼——对{age}岁来说数目异常！' },
+      { part:'牙齿', normal:32, unit:'颗', nd:'成人恒牙32颗（含4颗智齿）。儿童乳牙20颗，换牙期混合齿列。', ad:'患者有{0}颗牙齿——齿式与人类完全不同！' },
+      { part:'全身骨骼', normal:206, unit:'块', nd:'成人全身骨骼206块（含听小骨）。新生儿约270块，随生长部分融合。', ad:'患者全身只有{0}块骨骼——骨块总数明显异常！' },
       { part:'骶椎', normal:5, unit:'块', nd:'骶骨由5块骶椎（S1-S5）融合而成，成年后融合为1块骶骨。', ad:'患者骶骨由{0}块骶椎融合——骶骨分节数目异常！' },
       { part:'颅骨（不含听小骨）', normal:23, unit:'块', nd:'颅骨共23块。脑颅8块（额/顶2/颞2/枕/蝶/筛）+ 面颅15块。不含听小骨。', ad:'患者颅骨有{0}块——颅骨分块方式异于人类！' },
       { part:'听小骨（双侧）', normal:6, unit:'块', nd:'每侧中耳有3块听小骨（锤骨+砧骨+镫骨），双侧共6块，是人体最小的骨骼。', ad:'患者双侧听小骨共{0}块——中耳传音结构异常！' },
@@ -395,7 +395,7 @@ const EXAM_DATA = {
       { part:'趾骨（双足）', normal:28, unit:'块', nd:'每足14块趾骨（𧿹趾2块，其余各3块），双足共28块。', ad:'患者双足只有{0}块趾骨——足趾分节异常，可能影响行走！' },
       { part:'上肢骨（双侧合计）', normal:64, unit:'块', nd:'双侧上肢骨共64块。每侧32块：锁骨1+肩胛骨1+肱骨1+桡骨1+尺骨1+腕骨8+掌骨5+指骨14。', ad:'患者上肢骨共{0}块——上肢骨骼数目异常！' },
       { part:'下肢骨（双侧合计）', normal:62, unit:'块', nd:'双侧下肢骨共62块。每侧31块：髋骨1+股骨1+髌骨1+胫骨1+腓骨1+跗骨7+跖骨5+趾骨14。', ad:'患者下肢骨共{0}块——下肢骨骼数目异常！' },
-      { part:'骨有机物占比（儿童≈60% vs 成人≈35%）', normal:'30~40', unit:'%', ageMap:{0:60,12:35}, nd:'人类{age}岁骨有机物约占{at}%（儿童约60%使骨柔韧，成人约35%较坚硬，老人约20%更脆）。', ad:'患者骨有机物占比{0}%——对{age}岁来说骨质结构异常！' },
+      { part:'骨有机物与无机物比例（儿童≈6:4，成人≈3.5:6.5）', normal:'30~40', unit:'%', nd:'成人骨有机物约占30~40%（无机物60~70%）。儿童有机物约60%使骨柔韧，老人约20%更脆。', ad:'患者骨有机物占比{0}%——骨质结构异常！' },
       { part:'胸骨', normal:1, unit:'块', nd:'成人胸骨由胸骨柄+胸骨体+剑突三部分融合而成，计为1块。', ad:'患者有{0}块胸骨——胸骨分节异常！' },
       { part:'锁骨', normal:2, unit:'根', nd:'锁骨连接胸骨和肩胛骨，每侧1根，双侧共2根。', ad:'患者有{0}根锁骨——肩带结构异常！' },
       { part:'肩胛骨', normal:2, unit:'块', nd:'肩胛骨位于胸廓后方，每侧1块，双侧共2块。参与构成肩关节和肩袖。', ad:'患者有{0}块肩胛骨——肩部骨骼异常！' },
@@ -410,7 +410,7 @@ const EXAM_DATA = {
       { part:'脊神经对数', normal:31, unit:'对', nd:'人类有31对脊神经：颈8+胸12+腰5+骶5+尾1。注意颈髓虽然只有7节颈椎，但有8对颈神经！', ad:'患者有{0}对脊神经——神经根分布异常！' },
       { part:'脑神经对数', normal:12, unit:'对', nd:'12对脑神经（Ⅰ嗅、Ⅱ视、Ⅲ动眼、Ⅳ滑车、Ⅴ三叉、Ⅵ外展、Ⅶ面、Ⅷ前庭蜗、Ⅸ舌咽、Ⅹ迷走、Ⅺ副、Ⅻ舌下）。', ad:'患者有{0}对脑神经——多了或少了，不是人类的脑神经配置！' },
       { part:'脊髓长度', normal:45, unit:'cm', nd:'成人脊髓长约45cm（男性约45cm，女性约43cm），上平枕骨大孔，下端至L1下缘。', ad:'患者脊髓长达{0}cm——长度明显异常，推测延伸至骶管！' },
-      { part:'脊髓末端位置', normal:'L1下缘', unit:'', ageMap:{0:'L3',2:'L1下缘'}, nd:'人类{age}岁脊髓末端约在{at}（新生儿约L3，2岁后升至L1下缘）。', ad:'患者脊髓末端在{0}——位置异常，腰椎穿刺需格外小心！' },
+      { part:'脊髓末端位置', normal:'L1下缘', unit:'', nd:'成人脊髓末端平L1椎体下缘。新生儿可达L3，约2岁后升至成人水平。是腰椎穿刺的重要标志。', ad:'患者脊髓末端在{0}——位置异常，腰椎穿刺需格外小心！' },
       { part:'椎间盘数量', normal:23, unit:'个', nd:'椎间盘共23个：C2/3到C7/T1共6个+胸段11个+T12/L1到L5/S1共5个+无。C1/C2和骶尾段无椎间盘。', ad:'患者有{0}个椎间盘——椎间盘数量异常，脊柱活动度不同！' },
       { part:'脑室数量', normal:4, unit:'个', nd:'脑室共4个：左右侧脑室（各1）+第三脑室+第四脑室。脑室内充满脑脊液。', ad:'患者有{0}个脑室——脑室系统发育异常！' },
       { part:'脑脊液总量', normal:'100~150', unit:'ml', nd:'正常成人脑脊液总量约100~150ml。每日生成约500ml，不断循环更新。', ad:'患者脑脊液总量{0}ml——脑脊液循环异常！' },
@@ -692,7 +692,7 @@ function addReportCard(toolKey,item,isAlien){
   const placeholder=area.querySelector('.report-placeholder');
   if(placeholder) placeholder.remove();
 
-  const norm = item._ageNorm !== undefined ? item._ageNorm : item.normal;
+  const norm = item.normal;
   const val = isAlien ? item._alienVal : norm;
   const valStr = item.unit ? val+item.unit : val;
   const cat = EXAM_DATA[toolKey];
@@ -750,13 +750,11 @@ function resetForPatient(){
   document.getElementById('detainBtn').disabled=false;
 }
 
-function getAgeLabel(a){return a<6?'婴幼儿':a<12?'儿童':a<18?'青少年':a<60?'成人':'老年'}
 
 function nextPatient(){
   if(!state.active) return;
   state.round++;
   state.patientType=Math.random()<0.5?'human':'alien';
-  state.patientAge = rand(3,75);
   state.alienAbnormalTools=[];
   if(state.patientType==='alien'){
     const keys=Object.keys(EXAM_DATA);
@@ -764,10 +762,9 @@ function nextPatient(){
     if(Math.random()<0.4) state.alienAbnormalTools.push(pick(keys.filter(k=>k!==state.alienAbnormalTools[0])));
   }
 
-  const name=randomName(), job=pick(JOBS), age=state.patientAge;
-  const ageLabel=getAgeLabel(age);
+  const name=randomName(), job=pick(JOBS);
   document.getElementById('patientName').textContent='患者 #'+String(state.round).padStart(3,'0')+' · '+name;
-  document.getElementById('patientMeta').innerHTML='职业：'+job+'<br>年龄：'+age+'岁（'+ageLabel+'）';
+  document.getElementById('patientMeta').innerHTML='职业：'+job;
   const tag=document.getElementById('patientTag');
   tag.className='tag tag-human'; tag.textContent='⏳ 待检查 · '+(state.round)+'/10';
 
@@ -801,30 +798,14 @@ function useTool(toolKey){
   const idx=cat.items.indexOf(item);
   state.globalUsedItems.push(toolKey+'_'+idx);
 
-  // Alien value
-  // Compute age-adjusted normal
-  let ageNorm = item.normal;
-  let ageNormStr = item.normal;
-  if(item.ageMap){
-    const ages = Object.keys(item.ageMap).map(Number).sort((a,b)=>b-a);
-    for(const minAge of ages){
-      if(state.patientAge >= minAge){ ageNorm = item.ageMap[minAge]; break; }
-    }
-    ageNormStr = ageNorm;
-  }
-  item._ageNorm = ageNorm;
-
+  // Compute alien value
   const isAlien=state.patientType==='alien';
   const isAbnormal=isAlien && state.alienAbnormalTools.includes(toolKey);
   if(isAbnormal){
-    if(item.ageMap){
-      const otherVals=Object.values(item.ageMap).filter(v=>v!=ageNorm);
-      item._alienVal=otherVals.length?pick(otherVals):ageNorm;
-    }else if(typeof ageNorm==='number'){
+    if(typeof item.normal==='number'){
       item._alienVal=getAlienValue(item);
     }else if(item.part==='脊髓末端位置'){
-      const otherVals=Object.values(item.ageMap||{}).filter(v=>v!=ageNorm);
-      item._alienVal=otherVals.length?pick(otherVals):pick(ALIEN_VALUES.cordEnd);
+      item._alienVal=pick(ALIEN_VALUES.cordEnd);
     }else{
       item._alienVal=getAlienValue(item);
       if(!item._alienVal||item._alienVal===item.normal){
@@ -879,7 +860,7 @@ function decide(action){
 
   // Build comparison table
   function compRow(rp){
-    const normVal=(rp.item._ageNorm!==undefined?rp.item._ageNorm:rp.item.normal)+rp.item.unit;
+    const normVal=rp.item.normal+rp.item.unit;
     if(rp.isAbnormal){
       const foundVal=rp.item._alienVal+rp.item.unit;
       return '<div class="ct-item"><span class="ct-part">'+rp.item.part+'</span><span class="ct-found">'+foundVal+'</span><span class="ct-correct">← 正常应为 '+normVal+'</span></div>';
@@ -978,7 +959,7 @@ function renderHandbook(){
   const container=document.getElementById('handbookContent');
   container.innerHTML='';
   const cats=[
-    ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骰椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','顑骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跧骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','骨有机物占比（儿童≈60% vs 成人≈35%）','胸骨','锁骨','肩膀骨','脊柱生理弯曲','足弓数量','髇骨骨块数']],
+    ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骰椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','顑骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跧骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','骨有机物与无机物比例（儿童≈6:4，成人≈3.5:6.5）','胸骨','锁骨','肩膀骨','脊柱生理弯曲','足弓数量','髇骨骨块数']],
     ['🧠 神经脊髓',['脊神经对数','脑神经对数','脊髓长度','脊髓末端位置','椎间盘数量','脑室数量','脑脊液总量','大脑重量','脊髓节段','小脑重量','脑干长度','交感干神经节']],
     ['🔬 内脏系统',['小肠长度','食管长度','气管长度','结肠长度','肺叶数量','肝脏重量','十二指肠长度','男性尿道长度','女性尿道长度','气管软骨环数','肾锥体数量（单侧）','输尿管长度','胃容量','肺重量（双侧）','脾脏重量','胰脏重量','胆囊容量','肾长度','肾重量（单侧）','阑尾长度','直肠长度']],
     ['🧬 遗传基因',['染色体数目','血型系统（常用）','血红蛋白亚基']],
