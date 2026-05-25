@@ -230,6 +230,15 @@ body::after{
 .modal::-webkit-scrollbar-track{background:rgba(0,0,0,0.2)}
 .modal::-webkit-scrollbar-thumb{background:var(--accent-dim);border-radius:2px}
 
+/* Handbook accordion */
+.hb-cat{margin-bottom:6px;border:1px solid var(--panel-border);border-radius:4px;overflow:hidden}
+.hb-cat h3{font-size:12px;color:var(--accent);padding:8px 10px;margin:0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);user-select:none;transition:background 0.15s}
+.hb-cat h3:hover{background:rgba(0,240,160,0.05)}
+.hb-cat h3 .hb-toggle{font-size:10px;color:var(--accent-dim);transition:transform 0.2s}
+.hb-cat.open h3 .hb-toggle{transform:rotate(90deg)}
+.hb-cat .hb-items{display:none;padding:6px 8px}
+.hb-cat.open .hb-items{display:block}
+
 /* FAB */
 .fab{
   position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;
@@ -238,6 +247,18 @@ body::after{
   box-shadow:0 0 15px rgba(0,240,160,0.1);z-index:50;transition:all 0.2s;
 }
 .fab:hover{background:rgba(0,240,160,0.15);transform:scale(1.1)}
+.continue-btn{
+  display:block;width:100%;padding:10px;margin-top:8px;
+  background:rgba(0,240,160,0.12);border:1px solid var(--accent-dim);border-radius:4px;
+  color:var(--accent);font-family:inherit;font-size:14px;cursor:pointer;letter-spacing:3px;
+  transition:all 0.2s;
+}
+.continue-btn:hover{background:rgba(0,240,160,0.25)}
+.compare-table{font-size:11px;line-height:1.8;padding:6px 8px;margin:4px 0;background:rgba(0,0,0,0.15);border-radius:3px;border:1px solid rgba(255,255,255,0.04)}
+.compare-table .ct-item{display:flex;justify-content:space-between;padding:2px 0}
+.compare-table .ct-item .ct-part{color:var(--text)}
+.compare-table .ct-item .ct-found{color:var(--danger)}
+.compare-table .ct-item .ct-correct{color:var(--accent)}
 
 /* Animations */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
@@ -335,6 +356,7 @@ body::after{
 
     <!-- Feedback -->
     <div class="feedback" id="feedback"></div>
+    <button class="continue-btn" id="continueBtn" onclick="handleContinue()" style="display:none">确 定</button>
   </div>
 </div>
 
@@ -374,6 +396,12 @@ const EXAM_DATA = {
       { part:'上肢骨（双侧合计）', normal:64, unit:'块', nd:'双侧上肢骨共64块。每侧32块：锁骨1+肩胛骨1+肱骨1+桡骨1+尺骨1+腕骨8+掌骨5+指骨14。', ad:'患者上肢骨共{0}块——上肢骨骼数目异常！' },
       { part:'下肢骨（双侧合计）', normal:62, unit:'块', nd:'双侧下肢骨共62块。每侧31块：髋骨1+股骨1+髌骨1+胫骨1+腓骨1+跗骨7+跖骨5+趾骨14。', ad:'患者下肢骨共{0}块——下肢骨骼数目异常！' },
       { part:'骨有机物占比（儿童≈60% vs 成人≈35%）', normal:'30~40', unit:'%', ageMap:{0:60,12:35}, nd:'人类{age}岁骨有机物约占{at}%（儿童约60%使骨柔韧，成人约35%较坚硬，老人约20%更脆）。', ad:'患者骨有机物占比{0}%——对{age}岁来说骨质结构异常！' },
+      { part:'胸骨', normal:1, unit:'块', nd:'成人胸骨由胸骨柄+胸骨体+剑突三部分融合而成，计为1块。', ad:'患者有{0}块胸骨——胸骨分节异常！' },
+      { part:'锁骨', normal:2, unit:'根', nd:'锁骨连接胸骨和肩胛骨，每侧1根，双侧共2根。', ad:'患者有{0}根锁骨——肩带结构异常！' },
+      { part:'肩胛骨', normal:2, unit:'块', nd:'肩胛骨位于胸廓后方，每侧1块，双侧共2块。参与构成肩关节和肩袖。', ad:'患者有{0}块肩胛骨——肩部骨骼异常！' },
+      { part:'脊柱生理弯曲', normal:4, unit:'个', nd:'脊柱有4个生理弯曲：颈曲（前凸）+胸曲（后凸）+腰曲（前凸）+骶曲（后凸）。', ad:'患者脊柱有{0}个生理弯曲——脊柱曲度异常！' },
+      { part:'足弓数量', normal:3, unit:'个', nd:'足弓共3个：内侧纵弓+外侧纵弓+横弓。足弓具有缓冲和支撑功能。', ad:'患者有{0}个足弓——足弓结构异常！' },
+      { part:'骨盆骨块数', normal:4, unit:'块', nd:'骨盆由4块骨组成：左右髋骨（各1）+骶骨+尾骨。', ad:'患者骨盆由{0}块骨组成——骨盆结构异常！' },
     ]
   },
   nerve: {
@@ -388,6 +416,9 @@ const EXAM_DATA = {
       { part:'脑脊液总量', normal:'100~150', unit:'ml', nd:'正常成人脑脊液总量约100~150ml。每日生成约500ml，不断循环更新。', ad:'患者脑脊液总量{0}ml——脑脊液循环异常！' },
       { part:'大脑重量', normal:1400, unit:'g', nd:'成人脑重约1400g（个体差异明显：男性约1350-1450g，女性约1200-1300g）。', ad:'患者脑重{0}g——与人类大脑重量范围不符！' },
       { part:'脊髓节段', normal:31, unit:'节', nd:'脊髓分31节段：颈8节+胸12节+腰5节+骶5节+尾1节，每节发出一对脊神经。', ad:'患者脊髓有{0}个节段——脊髓分节异常！' },
+      { part:'小脑重量', normal:150, unit:'g', nd:'成人小脑重约150g，占脑总重量的10%左右，但含有全脑50%以上的神经元。', ad:'患者小脑重{0}g——小脑发育异常！' },
+      { part:'脑干长度', normal:15, unit:'cm', nd:'脑干长约15cm，自上而下分为中脑+脑桥+延髓，是生命中枢所在地。', ad:'患者脑干长{0}cm——脑干发育异常！' },
+      { part:'交感干神经节', normal:23, unit:'对', nd:'交感干神经节约22~25对（通常计23对）：颈3+胸10~12+腰4+骶4+尾1。', ad:'患者有{0}对交感干神经节——自主神经系统异常！' },
     ]
   },
   scope: {
@@ -405,6 +436,15 @@ const EXAM_DATA = {
       { part:'气管软骨环数', normal:18, unit:'个', nd:'气管软骨环约16~20个（通常为18个），为C形缺口向后，缺口由平滑肌和结缔组织封闭。', ad:'患者只有{0}个气管软骨环——气管支撑结构异常！' },
       { part:'肾锥体数量（单侧）', normal:'15~20', unit:'个', nd:'每侧肾脏约15~20个肾锥体，锥体尖端朝向肾小盏，是尿液汇集的起始部位。', ad:'患者单侧肾锥体有{0}个——肾脏结构异常！' },
       { part:'输尿管长度', normal:'25~30', unit:'cm', nd:'成人输尿管长约25~30cm，有三个狭窄处（肾盂输尿管移行处、跨髂血管处、入膀胱壁处）。', ad:'患者输尿管长约{0}cm——泌尿系统结构异常！' },
+      { part:'胃容量', normal:'1~2', unit:'L', nd:'成人胃容量约1~2L。空腹时胃容量约50ml，进食后可通过容受性舒张大幅扩张。', ad:'患者胃容量约{0}L——消化系统结构异常！' },
+      { part:'肺重量（双侧）', normal:'1000~1300', unit:'g', nd:'双肺重量约1000~1300g，右肺略重于左肺（右3叶>左2叶）。', ad:'患者双肺重{0}g——呼吸系统发育异常！' },
+      { part:'脾脏重量', normal:150, unit:'g', nd:'成人脾脏重约150g（100~200g），是人体最大的淋巴器官。', ad:'患者脾脏重{0}g——淋巴系统异常！' },
+      { part:'胰腺重量', normal:80, unit:'g', nd:'成人胰腺重约70~100g（平均约80g），兼有外分泌和内分泌功能。', ad:'患者胰腺重{0}g——消化/内分泌器官异常！' },
+      { part:'胆囊容量', normal:'40~70', unit:'ml', nd:'胆囊容量约40~70ml，可储存和浓缩胆汁。', ad:'患者胆囊容量约{0}ml——胆汁储存系统异常！' },
+      { part:'肾长度', normal:'10~12', unit:'cm', nd:'成人肾脏长约10~12cm，约拳头大小。', ad:'患者肾长约{0}cm——肾脏发育异常！' },
+      { part:'肾重量（单侧）', normal:130, unit:'g', nd:'成人单侧肾脏重约120~150g（平均约130g）。', ad:'患者单侧肾重{0}g——肾脏发育异常！' },
+      { part:'阑尾长度', normal:'6~8', unit:'cm', nd:'阑尾长约6~8cm，根部连于盲肠后内侧壁。麦氏点是阑尾炎的体表标志。', ad:'患者阑尾长约{0}cm——阑尾结构异常！' },
+      { part:'直肠长度', normal:'12~15', unit:'cm', nd:'直肠长约12~15cm，上接乙状结肠（第3骶椎平面），下连肛管。', ad:'患者直肠长约{0}cm——消化末段结构异常！' },
     ]
   },
   gene: {
@@ -429,6 +469,8 @@ const EXAM_DATA = {
       { part:'小腿前群肌（单侧）', normal:3, unit:'块', nd:'小腿前群肌3块：胫骨前肌+趾长伸肌+𧿹长伸肌。主要功能为踝关节背屈和伸趾。', ad:'患者小腿前群肌有{0}块——足部背屈功能异常！' },
       { part:'小腿外侧群肌（单侧）', normal:2, unit:'块', nd:'小腿外侧群肌2块：腓骨长肌+腓骨短肌。主要功能为使足外翻和跖屈。', ad:'患者小腿外侧群有{0}块——足外翻功能异常！' },
       { part:'髌骨（人体最大的籽骨）', normal:2, unit:'块', nd:'髌骨是人体最大的籽骨，位于股四头肌腱内。每侧1块，双侧共2块。', ad:'患者有{0}块髌骨——髌骨数目异常！' },
+      { part:'全身骨骼肌数量', normal:'约639', unit:'块', nd:'人体全身骨骼肌约639块（按解剖命名计数约434块，细分约639块）。', ad:'患者全身骨骼肌约{0}块——肌肉系统异常！' },
+      { part:'人体最长肌肉（缝匠肌）', normal:2, unit:'块', nd:'缝匠肌是人体最长的肌肉，起于髂前上棘止于胫骨上端内侧。左右各1块。', ad:'患者缝匠肌有{0}块——下肢肌肉异常！' },
     ]
   },
   heart: {
@@ -442,6 +484,9 @@ const EXAM_DATA = {
       { part:'心脏每天搏动次数', normal:'约10万', unit:'次', nd:'正常成人心脏每天搏动约10万次（约60~100次/分×1440分钟/天≈86400~144000次）。', ad:'患者心脏每天搏动{0}次——心率及节律异常！' },
       { part:'全身血液量', normal:'4~5', unit:'L', nd:'正常成人血容量约占体重的7~8%，约4~5升（70~80ml/kg体重）。', ad:'患者血容量约{0}L——血容量明显异常！' },
       { part:'红细胞寿命', normal:120, unit:'天', nd:'正常红细胞寿命约120天。衰老的红细胞在脾脏被破坏清除，每天约1%红细胞更新。', ad:'患者红细胞寿命约{0}天——造血系统异常！' },
+      { part:'心脏重量', normal:300, unit:'g', nd:'成人心脏重约250~350g（平均约300g），约本人拳头大小。', ad:'患者心脏重{0}g——心脏发育异常！' },
+      { part:'安静时心率', normal:'60~100', unit:'次/分', nd:'成人安静状态下心率60~100次/分。', ad:'患者安静心率{0}次/分——心脏节律异常！' },
+      { part:'白细胞分类种数', normal:5, unit:'种', nd:'白细胞分为5种：中性+嗜酸+嗜碱+淋巴细胞+单核细胞。', ad:'患者白细胞有{0}种——血液系统异常！' },
     ]
   },
   sense: {
@@ -453,6 +498,10 @@ const EXAM_DATA = {
       { part:'耳蜗蜗管圈数', normal:2.5, unit:'圈', nd:'耳蜗内的蜗管绕蜗轴盘旋约2.5圈（从蜗底到蜗顶）。基底膜上的螺旋器是听觉感受器。', ad:'患者耳蜗蜗管只有{0}圈——听觉感知能力异常！' },
       { part:'大唾液腺对数', normal:3, unit:'对', nd:'三大唾液腺：腮腺+下颌下腺+舌下腺。每对两侧对称分布，分泌唾液帮助消化。', ad:'患者有{0}对大唾液腺——唾液分泌结构异常！' },
       { part:'味蕾总数', normal:'2000~8000', unit:'个', nd:'成人味蕾约2000~8000个，主要分布于舌乳头上（菌状/轮廓/叶状乳头），也分布于软腭、会厌等处。', ad:'患者味蕾数量{0}——味觉能力异于人类！' },
+      { part:'眼球前后径', normal:'约2.4', unit:'cm', nd:'成人眼球前后径约2.4cm（24mm）。>24mm为近视倾向。', ad:'患者眼球前后径{0}cm——眼球发育异常！' },
+      { part:'正常眼压', normal:'10~21', unit:'mmHg', nd:'正常眼压范围10~21mmHg。>21mmHg提示青光眼风险。', ad:'患者眼压{0}mmHg——眼内压异常！' },
+      { part:'半规管数量（单侧）', normal:3, unit:'个', nd:'每侧内耳有3个半规管：上半规管+后半规管+外半规管，感知旋转加速度。', ad:'患者单侧有{0}个半规管——平衡感知异常！' },
+      { part:'鼓膜面积', normal:'55~90', unit:'mm²', nd:'鼓膜面积约55~90mm²，有效振动面积约55mm²。', ad:'患者鼓膜面积约{0}mm²——声音传导异常！' },
     ]
   }
 };
@@ -486,6 +535,7 @@ const ALIEN_VALUES = {
   pericardium: [1,3,4], coronary: [1,3,4],
   archBranch: [2,4,5], heartBeat: ['约6万','约7万','约8万','约12万','约15万'],
   bloodVol: ['2~3','3~3.5','6~7','7~8'], rbcLife: [80,90,150,180],
+  sternum: [0,2,3], clavicle: [1,3,4], scapula: [1,3,4], spineCurve: [2,3,5,6], footArch: [1,2,4,5], pelvis: [2,3,5,6], cerebellum: [100,120,180,200], brainstem: [10,12,18,20], sympatheticGanglia: [18,20,25,28], stomachCapacity: ['0.3~0.5','0.5~0.8','2~3','3~4'], lungWeight: ['600~800','800~1000','1400~1600','1500~1800'], spleenWeight: [80,100,200,250], pancreasWeight: [50,60,100,120], gallbladderVol: ['10~20','20~30','80~100','100~150'], kidneyLength: ['6~8','8~9','13~15','15~18'], kidneyWeight: [70,90,160,200], appendixLength: ['2~4','3~5','9~12','10~15'], rectumLength: ['6~9','9~11','16~20','18~22'], heartWeight: [180,200,400,450], restingHR: ['40~50','50~55','110~130','130~150'], wbcTypes: [3,4,6,7], totalSkeletalMuscle: ['约500','约550','约700','约800'], sartorius: [1,3,4], eyeDiameter: ['约1.8','约2.0','约2.8','约3.0'], eyePressure: ['5~8','8~10','22~28','25~30'], semicircularCanal: [2,4,5], eardrumArea: ['20~40','40~50','100~120','120~150'],
   eyeLayer: [2,4,5], earOssicle: [2,4,5],
   earCanal: ['1.0~2.0','1.5~2.0','4.0~5.0','4.5~5.5'], cochlea: [1.5,2.0,3.0,3.5],
   salivaGland: [2,4,5], tasteBud: ['500~1000','1000~1500','9000~12000','10000~15000'],
@@ -495,21 +545,27 @@ const PART_ALIEN_KEY = {
   '肋骨':'ribs','椎骨总数':'vertebrae','颈椎':'cervical','胸椎':'thoracic','腰椎':'lumbar',
   '指骨（双手）':'fingers','腕骨（双手）':'carpal','牙齿':'teeth','全身骨骼':'totalBones','骶椎':'sacral',
   '颅骨（不含听小骨）':'skull','听小骨（双侧）':'ossicles','掌骨（双手）':'metacarpal',
+  '胸骨':'sternum','锁骨':'clavicle','肩胛骨':'scapula','脊柱生理弯曲':'spineCurve','足弓数量':'footArch','骨盆骨块数':'pelvis',
   '跗骨（双足）':'tarsal','趾骨（双足）':'toes','上肢骨（双侧合计）':'upperLimb','下肢骨（双侧合计）':'lowerLimb',
   '脊神经对数':'spinalNerves','脑神经对数':'cranialNerves','脊髓长度':'cordLength','脊髓末端位置':'cordEnd',
+  '小脑重量':'cerebellum','脑干长度':'brainstem','交感干神经节':'sympatheticGanglia',
   '椎间盘数量':'disc','脑室数量':'ventricle','脑脊液总量':'csf','大脑重量':'brainWeight','脊髓节段':'cordSegment',
   '小肠长度':'smallIntestine','食管长度':'esophagus','气管长度':'trachea','结肠长度':'colon',
   '肺叶数量':'lungLobe','肝脏重量':'liverWeight','十二指肠长度':'duodenum',
   '男性尿道长度':'maleUrethra','女性尿道长度':'femaleUrethra','气管软骨环数':'trachealRing',
+  '胃容量':'stomachCapacity','肺重量（双侧）':'lungWeight','脾脏重量':'spleenWeight','胰腺重量':'pancreasWeight','胆囊容量':'gallbladderVol','肾长度':'kidneyLength','肾重量（单侧）':'kidneyWeight','阑尾长度':'appendixLength','直肠长度':'rectumLength',
   '肾锥体数量（单侧）':'renalPyramid','输尿管长度':'ureter',
   '染色体数目':'chromosome','血型系统（常用）':'bloodType','血红蛋白亚基':'hemoglobin',
+  '全身骨骼肌数量':'totalSkeletalMuscle','人体最长肌肉（缝匠肌）':'sartorius',
   '前臂肌前群':'forearmAnt','前臂肌后群':'forearmPost','手肌（单侧）':'handMuscle','小腿三头肌':'triceps',
   '眼外肌（单侧）':'eyeMuscle','咀嚼肌（双侧）':'masticatory',
   '股四头肌（单侧）':'quadriceps','大腿后群肌（单侧）':'hamstring',
   '小腿前群肌（单侧）':'shinFront','小腿外侧群肌（单侧）':'shinSide','髌骨（人体最大的籽骨）':'patella',
+  '心脏重量':'heartWeight','安静时心率':'restingHR','白细胞分类种数':'wbcTypes',
   '心腔数量':'chamber','心脏瓣膜数量':'valve','心包层数':'pericardium',
   '冠状动脉主干数':'coronary','主动脉弓分支数':'archBranch',
   '心脏每天搏动次数':'heartBeat','全身血液量':'bloodVol','红细胞寿命':'rbcLife',
+  '眼球前后径':'eyeDiameter','正常眼压':'eyePressure','半规管数量（单侧）':'semicircularCanal','鼓膜面积':'eardrumArea',
   '眼球壁层数':'eyeLayer','听小骨（单侧）':'earOssicle','外耳道长度':'earCanal',
   '耳蜗蜗管圈数':'cochlea','大唾液腺对数':'salivaGland','味蕾总数':'tasteBud',
 };
@@ -680,7 +736,6 @@ function startGame(){
 
 function resetForPatient(){
   state.reports=[];
-  state.alienAbnormalTools=[];
   state.judging=false;
   state.decisionMade=false;
 
@@ -822,31 +877,39 @@ function decide(action){
   // Build evidence summary
   const abnormalReports=state.reports.filter(r=>r.isAbnormal);
 
+  // Build comparison table
+  function compRow(rp){
+    const normVal=(rp.item._ageNorm!==undefined?rp.item._ageNorm:rp.item.normal)+rp.item.unit;
+    if(rp.isAbnormal){
+      const foundVal=rp.item._alienVal+rp.item.unit;
+      return '<div class="ct-item"><span class="ct-part">'+rp.item.part+'</span><span class="ct-found">'+foundVal+'</span><span class="ct-correct">← 正常应为 '+normVal+'</span></div>';
+    }
+    return '<div class="ct-item"><span class="ct-part">'+rp.item.part+'</span><span>'+normVal+'</span><span style="color:var(--accent-dim)">✓</span></div>';
+  }
+
   if(correct){
     state.score++;
-    let detail;
+    let detail, extraHtml='';
     if(isAlien){
-      const items=abnormalReports.map(r=>r.item.part+'（'+(r.item._alienVal!==undefined?r.item._alienVal+r.item.unit:r.item.normal+r.item.unit)+'）').join('、');
-      detail=`成功识别外星人！异常数据：${items}。已扣押！`;
+      extraHtml='<div class="compare-table">'+state.reports.map(compRow).join('')+'</div>';
+      detail='成功识别外星人！已扣押。';
     }else{
-      detail='所有检查项目数据正常，正常居民，予以放行。';
+      detail='所有检查项目正常，正常居民予以放行。';
     }
-    showFeedback('correct',detail);
+    showFeedback('correct',detail,extraHtml);
     const tag=document.getElementById('patientTag');
     if(isAlien){tag.className='tag tag-alien'; tag.textContent='👽 外星人 ✓ 已扣押'}
     else{tag.className='tag tag-human'; tag.textContent='🧑 正常居民 ✓ 已放行'}
   }else{
     state.hearts--;
     if(isAlien){
-      // Released an alien
-      const items=abnormalReports.map(r=>r.item.part+'：'+(r.item._alienVal!==undefined?r.item._alienVal+r.item.unit:r.item.normal+r.item.unit)).join('、');
-      const hint=items.length?`异常数据：${items}。这些数值明显不是人类！`:'他伪装的很好，所有检查数据都是正常的——但目击情报确认他就是外星人！多检查几个项目或许能发现破绽。';
-      showFeedback('wrong_escape','您放走了一个外星人！',hint);
+      const extraHtml='<div class="compare-table">'+state.reports.map(compRow).join('')+'</div>';
+      showFeedback('wrong_escape','您放走了一个外星人！',extraHtml);
       document.getElementById('patientTag').className='tag tag-alien';
       document.getElementById('patientTag').textContent='👽 外星人 ✗ 已逃脱';
     }else{
-      // Detained a human
-      showFeedback('wrong_complaint','患者投诉您误诊！','该患者的检查结果全部属于正常范围。您扣押了一位无辜市民。');
+      const extraHtml='<div class="compare-table">'+state.reports.map(compRow).join('')+'</div>';
+      showFeedback('wrong_complaint','患者投诉您误诊！','该患者的检查结果全部正常。您扣押了一位无辜市民。'+extraHtml);
       document.getElementById('patientTag').className='tag tag-human';
       document.getElementById('patientTag').textContent='🧑 正常居民 ✗ 被误扣';
     }
@@ -854,15 +917,17 @@ function decide(action){
 
   renderStatus();
 
-  if(state.hearts<=0){
-    setTimeout(()=>gameOver(),2000);
-    return;
-  }
-  if(state.round >= 10){
-    setTimeout(()=>gameWin(),2000);
-    return;
-  }
-  setTimeout(()=>{state.judging=false; nextPatient();},2200);
+  // Show continue button instead of auto-advance
+  document.getElementById('continueBtn').style.display='block';
+  document.getElementById('continueBtn').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function handleContinue(){
+  document.getElementById('continueBtn').style.display='none';
+  if(state.hearts<=0){ gameOver(); return; }
+  if(state.round>=10){ gameWin(); return; }
+  state.judging=false;
+  nextPatient();
 }
 
 function gameOver(){
@@ -912,29 +977,29 @@ function toggleHandbook(){
 function renderHandbook(){
   const container=document.getElementById('handbookContent');
   container.innerHTML='';
-  const cats={
-    '🦴 骨骼系统':['肋骨','椎骨总数','颈椎','胸椎','腰椎','骶椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','颅骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跗骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）'],
-    '🧠 神经脊髓':['脊神经对数','脑神经对数','脊髓长度','脊髓末端位置','椎间盘数量','脑室数量','脑脊液总量','大脑重量','脊髓节段'],
-    '🔬 内脏系统':['小肠长度','食管长度','气管长度','结肠长度','肺叶数量','肝脏重量','十二指肠长度','男性尿道长度','女性尿道长度','气管软骨环数','肾锥体数量（单侧）','输尿管长度'],
-    '🧬 遗传基因':['染色体数目','血型系统（常用）','血红蛋白亚基'],
-    '💪 肌肉系统':['前臂肌前群','前臂肌后群','手肌（单侧）','小腿三头肌','眼外肌（单侧）','咀嚼肌（双侧）','股四头肌（单侧）','大腿后群肌（单侧）','小腿前群肌（单侧）','小腿外侧群肌（单侧）','髌骨（人体最大的籽骨）'],
-    '❤️ 循环系统':['心腔数量','心脏瓣膜数量','心包层数','冠状动脉主干数','主动脉弓分支数','心脏每天搏动次数','全身血液量','红细胞寿命'],
-    '👁️ 感觉器官':['眼球壁层数','听小骨（单侧）','外耳道长度','耳蜗蜗管圈数','大唾液腺对数','味蕾总数'],
-  };
-  for(const[catName,parts]of Object.entries(cats)){
+  const cats=[
+    ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骰椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','顑骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跧骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','骨有机物占比（儿童≈60% vs 成人≈35%）','胸骨','锁骨','肩膀骨','脊柱生理弯曲','足弓数量','髇骨骨块数']],
+    ['🧠 神经脊髓',['脊神经对数','脑神经对数','脊髓长度','脊髓末端位置','椎间盘数量','脑室数量','脑脊液总量','大脑重量','脊髓节段','小脑重量','脑干长度','交感干神经节']],
+    ['🔬 内脏系统',['小肠长度','食管长度','气管长度','结肠长度','肺叶数量','肝脏重量','十二指肠长度','男性尿道长度','女性尿道长度','气管软骨环数','肾锥体数量（单侧）','输尿管长度','胃容量','肺重量（双侧）','脾脏重量','胰脏重量','胆囊容量','肾长度','肾重量（单侧）','阑尾长度','直肠长度']],
+    ['🧬 遗传基因',['染色体数目','血型系统（常用）','血红蛋白亚基']],
+    ['💪 肌肉系统',['前臂肌前群','前臂肌后群','手肌（单侧）','小腿三头肌','眼外肌（单侧）','咀嚼肌（双侧）','股四头肌（单侧）','大腿后群肌（单侧）','小腿前群肌（单侧）','小腿外侧群肌（单侧）','鮐骨（人体最大的籽骨）','全身骨骼肌数量','人体最长肌肉（缝妆肌）']],
+    ['❤️ 循环系统',['心腔数量','心脏瓣膜数量','心包层数','冠状动脉主干数','主动脉弓分支数','心脏每天卓动次数','全身血液量','红细胞寿命','心脏重量','安静时心率','白细胞分类种数']],
+    ['👁️ 感觉器官',['眼球壁层数','听小骨（单侧）','外耳道长度','耳蜗蜗管圈数','大唾液腺对数','味蕾总数','眼球前后径','正常眼压','半规管数量（单侧）','鼓膜面积']],
+  ];
+  for(const[catName,parts]of cats){
     const div=document.createElement('div');
-    div.className='handbook-cat';
-    let html='<h3>'+catName+'</h3>';
+    div.className='hb-cat';
+    let itemsHtml='';
     for(const part of parts){
       for(const cat of Object.values(EXAM_DATA)){
         for(const item of cat.items){
           if(item.part===part){
-            html+='<div class="handbook-item"><span>'+part+'</span><span class="h-val">'+item.normal+(item.unit||'')+'</span></div>';
+            itemsHtml+='<div class="handbook-item"><span>'+part+'</span><span class="h-val">'+item.normal+(item.unit||'')+'</span></div>';
           }
         }
       }
     }
-    div.innerHTML=html;
+    div.innerHTML='<h3 onclick="this.parentElement.classList.toggle(\'open\')"><span>'+catName+'</span><span class="hb-toggle">▶</span></h3><div class="hb-items">'+itemsHtml+'</div>';
     container.appendChild(div);
   }
 }
