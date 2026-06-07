@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>星际解剖站 · 找出外星伪人</title>
+<title>寻找外星伪人 · Yes, I am a Human</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -18,6 +18,10 @@
   --text-dim:#6a7a8a;
   --heart:#f03050;
   --gold:#f0d030;
+  --fs-sm:13px;
+  --fs-md:15px;
+  --fs-lg:18px;
+  --fs-xl:24px;
 }
 body{
   background:var(--bg);
@@ -40,11 +44,11 @@ body::after{
 }
 .game-container{
   width:100%;
-  max-width:520px;
+  max-width:640px;
   background:var(--panel);
   border:2px solid var(--panel-border);
   border-radius:8px;
-  padding:14px;
+  padding:16px;
   position:relative;
   box-shadow:0 0 30px rgba(0,240,160,0.05),inset 0 0 30px rgba(0,0,0,0.3);
 }
@@ -58,37 +62,37 @@ body::after{
   gap:4px;
 }
 .title{
-  font-size:13px;font-weight:bold;color:var(--accent);
+  font-size:16px;font-weight:bold;color:var(--accent);
   text-shadow:0 0 8px rgba(0,240,160,0.3);letter-spacing:1px;
 }
-.status-bar{display:flex;align-items:center;gap:8px;font-size:12px}
-.hearts{color:var(--heart);font-size:16px;letter-spacing:2px}
+.status-bar{display:flex;align-items:center;gap:8px;font-size:14px}
+.hearts{color:var(--heart);font-size:18px;letter-spacing:2px}
 .hearts .lost{opacity:0.2}
 .score{color:var(--gold)}
 .round{color:var(--text-dim)}
 
 /* Patient */
 .patient-area{
-  display:flex;align-items:center;gap:14px;
-  padding:10px 0;min-height:110px;
+  display:flex;align-items:center;gap:16px;
+  padding:12px 0;min-height:130px;
 }
 .patient-canvas-wrap{
-  flex-shrink:0;width:78px;height:104px;
+  flex-shrink:0;width:96px;height:128px;
   background:rgba(0,0,0,0.3);border:1px solid var(--panel-border);border-radius:4px;
   display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
 }
-.patient-canvas-wrap canvas{display:block}
+.patient-canvas-wrap canvas{display:block;width:96px;height:128px}
 .patient-canvas-wrap::after{
   content:'';position:absolute;inset:0;
   background:repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(0,240,160,0.02) 2px,rgba(0,240,160,0.02) 4px);
   pointer-events:none;
 }
 .patient-info{flex:1;min-width:0}
-.patient-info .name{font-size:15px;color:var(--accent);margin-bottom:2px}
-.patient-info .meta{font-size:11px;color:var(--text-dim);line-height:1.6}
+.patient-info .name{font-size:18px;color:var(--accent);margin-bottom:4px}
+.patient-info .meta{font-size:13px;color:var(--text-dim);line-height:1.6}
 .patient-info .tag{
-  display:inline-block;font-size:10px;padding:2px 8px;border-radius:3px;margin-top:4px;
+  display:inline-block;font-size:12px;padding:3px 10px;border-radius:3px;margin-top:4px;
 }
 .tag-human{background:rgba(0,240,160,0.15);color:var(--accent);border:1px solid rgba(0,240,160,0.3)}
 .tag-alien{background:rgba(240,48,80,0.15);color:var(--danger);border:1px solid rgba(240,48,80,0.3)}
@@ -98,18 +102,18 @@ body::after{
   display:flex;gap:5px;padding:8px 0;
 }
 .tool-btn{
-  flex:1;min-width:52px;padding:7px 2px;
+  flex:1;min-width:64px;padding:9px 4px;
   background:rgba(0,0,0,0.3);border:1px solid var(--panel-border);border-radius:4px;
-  color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;
+  color:var(--text-dim);font-family:inherit;font-size:12px;cursor:pointer;
   text-align:center;transition:all 0.2s;line-height:1.2;
   position:relative;
 }
 .tool-btn:hover{background:rgba(0,240,160,0.08);border-color:var(--accent-dim);color:var(--text)}
 .tool-btn:active{transform:scale(0.95)}
-.tool-btn .icon{display:block;font-size:16px;margin-bottom:1px}
+.tool-btn .icon{display:block;font-size:18px;margin-bottom:2px}
 .tool-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
 .tool-btn.used{border-color:var(--accent-dim);background:rgba(0,240,160,0.06)}
-.tool-btn.used::after{content:'✓';position:absolute;top:-2px;right:-2px;font-size:9px;color:var(--accent)}
+.tool-btn.used::after{content:'✓';position:absolute;top:-2px;right:-2px;font-size:10px;color:var(--accent)}
 
 /* Report area */
 .report-area{
@@ -150,20 +154,20 @@ body::after{
   display:flex;gap:8px;padding:6px 0;
 }
 .submit-btn{
-  flex:1;padding:10px;border:1px solid var(--accent-dim);border-radius:4px;
+  flex:1;padding:12px;border:1px solid var(--accent-dim);border-radius:4px;
   background:rgba(0,240,160,0.08);color:var(--accent);
-  font-family:inherit;font-size:13px;cursor:pointer;letter-spacing:1px;
+  font-family:inherit;font-size:15px;cursor:pointer;letter-spacing:1px;
   transition:all 0.2s;
 }
 .submit-btn:hover{background:rgba(0,240,160,0.2)}
 .submit-btn:disabled{opacity:0.3;cursor:not-allowed}
 .decision-row{
-  display:none;gap:10px;padding:6px 0;
+  display:none;gap:10px;padding:8px 0;
 }
 .decision-row.show{display:flex}
 .decision-btn{
-  flex:1;padding:10px;border:none;border-radius:4px;
-  font-family:inherit;font-size:14px;font-weight:bold;cursor:pointer;
+  flex:1;padding:12px;border:none;border-radius:4px;
+  font-family:inherit;font-size:16px;font-weight:bold;cursor:pointer;
   transition:all 0.2s;letter-spacing:2px;
 }
 .decision-btn:active{transform:scale(0.95)}
@@ -181,7 +185,7 @@ body::after{
 
 /* Feedback */
 .feedback{
-  padding:8px 10px;border-radius:4px;font-size:12px;line-height:1.6;margin-top:4px;display:none;
+  padding:8px 10px;border-radius:4px;font-size:14px;line-height:1.6;margin-top:6px;display:none;
 }
 .feedback.show{display:block;animation:slideUp 0.3s ease-out}
 .feedback.correct{background:rgba(0,240,160,0.1);border:1px solid rgba(0,240,160,0.3);color:var(--accent)}
@@ -193,17 +197,17 @@ body::after{
 /* Overlay screens */
 .overlay-screen{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:320px;gap:14px;text-align:center;
+  min-height:360px;gap:16px;text-align:center;
 }
-.overlay-screen h1{font-size:22px;color:var(--accent);text-shadow:0 0 12px rgba(0,240,160,0.3);letter-spacing:2px}
-.overlay-screen .subtitle{font-size:13px;color:var(--text-dim);line-height:1.7}
+.overlay-screen h1{font-size:26px;color:var(--accent);text-shadow:0 0 12px rgba(0,240,160,0.3);letter-spacing:2px}
+.overlay-screen .subtitle{font-size:15px;color:var(--text-dim);line-height:1.8}
 .big-btn{
   padding:12px 36px;background:rgba(0,240,160,0.12);
   border:1px solid var(--accent-dim);border-radius:4px;color:var(--accent);
-  font-family:inherit;font-size:16px;cursor:pointer;letter-spacing:3px;transition:all 0.2s;
+  font-family:inherit;font-size:18px;cursor:pointer;letter-spacing:3px;transition:all 0.2s;
 }
 .big-btn:hover{background:rgba(0,240,160,0.25);box-shadow:0 0 20px rgba(0,240,160,0.1)}
-.gameover-score{font-size:28px;color:var(--gold)}
+.gameover-score{font-size:32px;color:var(--gold)}
 .gameover-stats{font-size:12px;color:var(--text-dim);line-height:1.6}
 
 /* Handbook modal */
@@ -282,7 +286,7 @@ body::after{
 <div class="game-container" id="app">
   <!-- Header -->
   <div class="header">
-    <div class="title">🏥 星际检疫站</div>
+    <div class="title">🛸 寻找外星伪人</div>
     <div class="status-bar">
       <span class="hearts" id="heartsDisplay"></span>
       <span class="score" id="scoreDisplay">0</span>
@@ -340,7 +344,7 @@ body::after{
 
     <!-- Accumulated Report Area -->
     <div class="report-area" id="reportArea">
-      <div class="report-placeholder">🔍 请选择检查项目</div>
+      <div class="report-placeholder">🔍 请选择检查项目（注意患者年龄）</div>
     </div>
 
     <!-- Submit Judgment -->
@@ -385,7 +389,7 @@ const EXAM_DATA = {
       { part:'腰椎', normal:5, unit:'块', nd:'人类腰椎为5块（L1-L5），承重最大。某些人可有腰椎骶化或骶椎腰化导致数目改变。', ad:'患者有{0}块腰椎——腰椎数目异常，脊柱承重结构不同！' },
       { part:'指骨（双手）', normal:28, unit:'块', nd:'每只手14块指骨。拇指2块（近节+远节），其余四指各3块，双手共28块。', ad:'患者双手只有{0}块指骨——手指关节分节数目异常！' },
       { part:'腕骨（双手）', normal:16, unit:'块', nd:'每只手8块腕骨：舟骨、月骨、三角骨、豌豆骨、大多角骨、小多角骨、头状骨、钩骨。双手16块。', ad:'患者双手有{0}块腕骨——腕骨排列方式异于人类！' },
-      { part:'牙齿', normal:32, unit:'颗', nd:'成人恒牙32颗（含4颗智齿）。儿童乳牙20颗，换牙期混合齿列。', ad:'患者有{0}颗牙齿——齿式与人类完全不同！' },
+      { part:'牙齿', normal:32, unit:'颗', nd:'牙齿数量随年龄变化：儿童乳牙20颗，换牙期20~28颗，成人恒牙28~32颗，老年人部分脱落20~28颗。', ad:'患者有{0}颗牙齿——齿式与人类完全不同！' },
       { part:'全身骨骼', normal:206, unit:'块', nd:'成人全身骨骼206块（含听小骨）。新生儿约270块，随生长部分融合。', ad:'患者全身只有{0}块骨骼——骨块总数明显异常！' },
       { part:'骶椎', normal:5, unit:'块', nd:'骶骨由5块骶椎（S1-S5）融合而成，成年后融合为1块骶骨。', ad:'患者骶骨由{0}块骶椎融合——骶骨分节数目异常！' },
       { part:'颅骨（不含听小骨）', normal:23, unit:'块', nd:'颅骨共23块。脑颅8块（额/顶2/颞2/枕/蝶/筛）+ 面颅15块。不含听小骨。', ad:'患者颅骨有{0}块——颅骨分块方式异于人类！' },
@@ -395,13 +399,15 @@ const EXAM_DATA = {
       { part:'趾骨（双足）', normal:28, unit:'块', nd:'每足14块趾骨（𧿹趾2块，其余各3块），双足共28块。', ad:'患者双足只有{0}块趾骨——足趾分节异常，可能影响行走！' },
       { part:'上肢骨（双侧合计）', normal:64, unit:'块', nd:'双侧上肢骨共64块。每侧32块：锁骨1+肩胛骨1+肱骨1+桡骨1+尺骨1+腕骨8+掌骨5+指骨14。', ad:'患者上肢骨共{0}块——上肢骨骼数目异常！' },
       { part:'下肢骨（双侧合计）', normal:62, unit:'块', nd:'双侧下肢骨共62块。每侧31块：髋骨1+股骨1+髌骨1+胫骨1+腓骨1+跗骨7+跖骨5+趾骨14。', ad:'患者下肢骨共{0}块——下肢骨骼数目异常！' },
-      { part:'骨有机物与无机物比例（儿童≈6:4，成人≈3.5:6.5）', normal:'30~40', unit:'%', nd:'成人骨有机物约占30~40%（无机物60~70%）。儿童有机物约60%使骨柔韧，老人约20%更脆。', ad:'患者骨有机物占比{0}%——骨质结构异常！' },
       { part:'胸骨', normal:1, unit:'块', nd:'成人胸骨由胸骨柄+胸骨体+剑突三部分融合而成，计为1块。', ad:'患者有{0}块胸骨——胸骨分节异常！' },
       { part:'锁骨', normal:2, unit:'根', nd:'锁骨连接胸骨和肩胛骨，每侧1根，双侧共2根。', ad:'患者有{0}根锁骨——肩带结构异常！' },
       { part:'肩胛骨', normal:2, unit:'块', nd:'肩胛骨位于胸廓后方，每侧1块，双侧共2块。参与构成肩关节和肩袖。', ad:'患者有{0}块肩胛骨——肩部骨骼异常！' },
       { part:'脊柱生理弯曲', normal:4, unit:'个', nd:'脊柱有4个生理弯曲：颈曲（前凸）+胸曲（后凸）+腰曲（前凸）+骶曲（后凸）。', ad:'患者脊柱有{0}个生理弯曲——脊柱曲度异常！' },
       { part:'足弓数量', normal:3, unit:'个', nd:'足弓共3个：内侧纵弓+外侧纵弓+横弓。足弓具有缓冲和支撑功能。', ad:'患者有{0}个足弓——足弓结构异常！' },
       { part:'骨盆骨块数', normal:4, unit:'块', nd:'骨盆由4块骨组成：左右髋骨（各1）+骶骨+尾骨。', ad:'患者骨盆由{0}块骨组成——骨盆结构异常！' },
+      { part:'髋臼Y形软骨愈合状态', normal:'已愈合', unit:'', nd:'髋臼由髂骨+坐骨+耻骨以Y形软骨连接，约12~16岁愈合。儿童未愈合，X光可见透亮线。', ad:'患者髋臼愈合状态与年龄不符——骨盆发育异常！' },
+      { part:'椎间盘高度（L3/4）', normal:'10~12', unit:'mm', nd:'椎间盘随增龄脱水变薄，老年人约6~8mm', ad:'患者椎间盘厚度不符合年龄——脊柱退变状态异常！' },
+      { part:'骨有机物比例（随龄变化）', normal:'30~40%', unit:'', nd:'儿童约60%使骨柔韧，老年人约20%更脆', ad:'患者骨质结构与年龄不符！' },
     ]
   },
   nerve: {
@@ -419,6 +425,8 @@ const EXAM_DATA = {
       { part:'小脑重量', normal:150, unit:'g', nd:'成人小脑重约150g，占脑总重量的10%左右，但含有全脑50%以上的神经元。', ad:'患者小脑重{0}g——小脑发育异常！' },
       { part:'脑干长度', normal:15, unit:'cm', nd:'脑干长约15cm，自上而下分为中脑+脑桥+延髓，是生命中枢所在地。', ad:'患者脑干长{0}cm——脑干发育异常！' },
       { part:'交感干神经节', normal:23, unit:'对', nd:'交感干神经节约22~25对（通常计23对）：颈3+胸10~12+腰4+骶4+尾1。', ad:'患者有{0}对交感干神经节——自主神经系统异常！' },
+      { part:'松果体钙化检出率', normal:'<5%', unit:'', nd:'松果体钙化随增龄上升，儿童<5%，老年人约85~90%', ad:'患者松果体钙化率与年龄不符！' },
+      { part:'胸腺残余重量', normal:'30~40', unit:'g', nd:'胸腺随增龄退化，儿童最大30~40g，老年人仅3~5g', ad:'患者胸腺与年龄不符！' },
     ]
   },
   scope: {
@@ -445,6 +453,8 @@ const EXAM_DATA = {
       { part:'肾重量（单侧）', normal:130, unit:'g', nd:'成人单侧肾脏重约120~150g（平均约130g）。', ad:'患者单侧肾重{0}g——肾脏发育异常！' },
       { part:'阑尾长度', normal:'6~8', unit:'cm', nd:'阑尾长约6~8cm，根部连于盲肠后内侧壁。麦氏点是阑尾炎的体表标志。', ad:'患者阑尾长约{0}cm——阑尾结构异常！' },
       { part:'直肠长度', normal:'12~15', unit:'cm', nd:'直肠长约12~15cm，上接乙状结肠（第3骶椎平面），下连肛管。', ad:'患者直肠长约{0}cm——消化末段结构异常！' },
+      { part:'肺弹性回缩力', normal:'强', unit:'', nd:'肺弹性随增龄下降，残气量增加导致老年性肺气肿', ad:'患者肺弹性不符合年龄' },
+      { part:'气管分叉角度', normal:'70~80°', unit:'', nd:'随年龄和胸廓形态增大，老年可达80~90°', ad:'患者气管分叉角不符合年龄！' },
     ]
   },
   gene: {
@@ -487,6 +497,7 @@ const EXAM_DATA = {
       { part:'心脏重量', normal:300, unit:'g', nd:'成人心脏重约250~350g（平均约300g），约本人拳头大小。', ad:'患者心脏重{0}g——心脏发育异常！' },
       { part:'安静时心率', normal:'60~100', unit:'次/分', nd:'成人安静状态下心率60~100次/分。', ad:'患者安静心率{0}次/分——心脏节律异常！' },
       { part:'白细胞分类种数', normal:5, unit:'种', nd:'白细胞分为5种：中性+嗜酸+嗜碱+淋巴细胞+单核细胞。', ad:'患者白细胞有{0}种——血液系统异常！' },
+      { part:'心脏纤维环钙化程度', normal:'无', unit:'', nd:'纤维环随增龄钙化，老年人主动脉瓣环钙化率达40~50%', ad:'患者心脏纤维环钙化程度与年龄不匹配！' },
     ]
   },
   sense: {
@@ -502,6 +513,10 @@ const EXAM_DATA = {
       { part:'正常眼压', normal:'10~21', unit:'mmHg', nd:'正常眼压范围10~21mmHg。>21mmHg提示青光眼风险。', ad:'患者眼压{0}mmHg——眼内压异常！' },
       { part:'半规管数量（单侧）', normal:3, unit:'个', nd:'每侧内耳有3个半规管：上半规管+后半规管+外半规管，感知旋转加速度。', ad:'患者单侧有{0}个半规管——平衡感知异常！' },
       { part:'鼓膜面积', normal:'55~90', unit:'mm²', nd:'鼓膜面积约55~90mm²，有效振动面积约55mm²。', ad:'患者鼓膜面积约{0}mm²——声音传导异常！' },
+      { part:'听阈频率范围', normal:'20~20000', unit:'Hz', nd:'听阈随增龄缩窄，儿童20~20000Hz，青壮年20~16000Hz，老年人20~8000Hz', ad:'患者听阈范围与年龄不符——听觉系统异常！' },
+      { part:'咽鼓管倾斜角度', normal:'30~40°', unit:'', nd:'儿童约10°接近水平，是儿童易患中耳炎的解剖基础', ad:'患者咽鼓管角度与年龄不符！' },
+      { part:'鼓膜厚度', normal:'正常', unit:'', nd:'鼓膜随增龄萎缩变薄', ad:'患者鼓膜厚度与年龄不符！' },
+      { part:'晶状体弹性', normal:'良好', unit:'', nd:'晶状体核随增龄硬化导致老花', ad:'患者晶状体弹性与年龄不符合！' },
     ]
   }
 };
@@ -573,6 +588,27 @@ const PART_ALIEN_KEY = {
 // ============================================================
 //  PATIENT GENERATION
 // ============================================================
+
+const AGE_NORMALS = {
+  "牙齿":{child:"20",young:"28~32",elderly:"20~28"},
+  "外耳道长度":{child:"1.5~2.5",young:"2.5~3.5",elderly:"3.5~4.0"},
+  "脊髓末端位置":{child:"L3下缘",young:"L1~L2下缘",elderly:"L1下缘"},
+  "大脑重量":{child:"1200~1300",young:"1300~1400",elderly:"1150~1300"},
+  "松果体钙化检出率":{child:"<5%",young:"约40%",elderly:"85~90%"},
+  "胸腺残余重量":{child:"30~40",young:"10~15",elderly:"3~5"},
+  "心脏纤维环钙化程度":{child:"无",young:"轻度或无",elderly:"中~显著"},
+  "鼓膜厚度":{child:"薄",young:"正常",elderly:"萎缩变薄"},
+  "晶状体弹性":{child:"极好",young:"良好",elderly:"差"},
+  "咽鼓管倾斜角度":{child:"约10°",young:"30~40°",elderly:"40~45°"},
+  "椎间盘高度（L3/4）":{child:"10~12",young:"10~12",elderly:"6~8"},
+  "肺弹性回缩力":{child:"强",young:"强",elderly:"弱"},
+  "气管分叉角度":{child:"60~70°",young:"70~80°",elderly:"80~90°"},
+  "骨有机物比例（随龄变化）":{child:"约60%",young:"30~40%",elderly:"约20%"},
+  "听阈频率范围":{child:"20~20000",young:"20~16000",elderly:"20~8000"},
+  "髋臼Y形软骨愈合状态":{child:"未愈合",young:"已愈合",elderly:"已愈合"},
+};
+function getAgeGroup(a){return a<=14?0:(a<=59?1:2);}
+function getAgeGroupLabel(a){return a<=14?"👧儿童":(a<=59?"🧑青壮年":"👴老年人");}
 const SURNAMES = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾孟平黄穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林钟徐邱骆高夏蔡田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄魏家封芮羿储靳汲邴糜松井段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎祖武符刘景詹束龙叶幸司韶郜黎蓟溥印宿白怀蒲邰从鄂索咸籍赖卓蔺屠蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍郤璩桑桂濮牛寿通边扈燕冀郏浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈廖庾终暨居衡步都耿满弘'.split('');
 const GIVEN_NAMES = ['伟','芳','娜','敏','强','磊','军','洋','静','丽','勇','涛','杰','鑫','浩','雪','晨','宇','轩','涵','昊','欣','悦','琪','睿','然','旭','鹏','铭','琳','瑶','毅','恒','辉','明','华','超','哲','斌','婷','亮','飞','颖','萌','帅','凯','博','文','武','安','邦','国','民','盛','志','远','思','雨','桐','辰','曦','辰','霖','楠','松','柏','柳','晨','岚','珺','玥','茜','璇','璞','瑜','瑾','璋','伟','超','健','康','宁','平','和','瑞','祥','吉','庆','龙','凤','虎','豹','鹏','程','锦','绣','宏','图','启','航'];
 const JOBS = ['星际矿工','空间站工程师','火星农场主','商船船员','科研站助理','物流调度员','太空导游','轨道清洁工','深空探测器操作员','能量站技工','卫星维修师','星际快递员','生态仓管理员','零重力教练','星舰厨师'];
@@ -647,6 +683,7 @@ let state = {
   globalUsedItems:[],  // cross-round item tracking for variety
   reports:[],          // findings for current patient [{toolKey,item,isAlien}]
   decisionMade:false,
+  currentPatientAge:30,
   judging:false,       // whether we're in judgment mode
 };
 
@@ -739,7 +776,7 @@ function resetForPatient(){
   state.judging=false;
   state.decisionMade=false;
 
-  document.getElementById('reportArea').innerHTML='<div class="report-placeholder">🔍 请选择检查项目</div>';
+  document.getElementById('reportArea').innerHTML='<div class="report-placeholder">🔍 请选择检查项目（注意患者年龄）</div>';
   document.getElementById('feedback').className='feedback';
   document.getElementById('feedback').innerHTML='';
   document.getElementById('decisionRow').classList.remove('show');
@@ -763,8 +800,9 @@ function nextPatient(){
   }
 
   const name=randomName(), job=pick(JOBS);
-  document.getElementById('patientName').textContent='患者 #'+String(state.round).padStart(3,'0')+' · '+name;
-  document.getElementById('patientMeta').innerHTML='职业：'+job;
+  const age=rand(3,90);state.currentPatientAge=age;var agl=getAgeGroupLabel(age);
+  document.getElementById('patientName').textContent=agl+' · '+name+' · '+age+'岁';
+  document.getElementById('patientMeta').innerHTML='年龄：'+age+'岁 · 职业：'+job;
   const tag=document.getElementById('patientTag');
   tag.className='tag tag-human'; tag.textContent='⏳ 待检查 · '+(state.round)+'/10';
 
@@ -959,13 +997,13 @@ function renderHandbook(){
   const container=document.getElementById('handbookContent');
   container.innerHTML='';
   const cats=[
-    ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骰椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','顑骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跧骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','骨有机物与无机物比例（儿童≈6:4，成人≈3.5:6.5）','胸骨','锁骨','肩膀骨','脊柱生理弯曲','足弓数量','髇骨骨块数']],
-    ['🧠 神经脊髓',['脊神经对数','脑神经对数','脊髓长度','脊髓末端位置','椎间盘数量','脑室数量','脑脊液总量','大脑重量','脊髓节段','小脑重量','脑干长度','交感干神经节']],
-    ['🔬 内脏系统',['小肠长度','食管长度','气管长度','结肠长度','肺叶数量','肝脏重量','十二指肠长度','男性尿道长度','女性尿道长度','气管软骨环数','肾锥体数量（单侧）','输尿管长度','胃容量','肺重量（双侧）','脾脏重量','胰脏重量','胆囊容量','肾长度','肾重量（单侧）','阑尾长度','直肠长度']],
+        ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骰椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','颅骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跗骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','胸骨','锁骨','肩胛骨','脊柱生理弯曲','足弓数量','骨盆骨块数','椎间盘高度（L3/4）','骨有机物比例（随龄变化）','髋臼Y形软骨愈合状态']],
+    ['🧠 神经脊髓',['脊神经对数','脑神经对数','脊髓长度','脊髓末端位置','椎间盘数量','脑室数量','脑脊液总量','大脑重量','脊髓节段','小脑重量','脑干长度','交感干神经节','松果体钙化检出率','胸腺残余重量']],
+    ['🔬 内脏系统',['小肠长度','食管长度','气管长度','结肠长度','肺叶数量','肝脏重量','十二指肠长度','男性尿道长度','女性尿道长度','气管软骨环数','肾锥体数量（单侧）','输尿管长度','胃容量','肺重量（双侧）','脾脏重量','胰腺重量','胆囊容量','肾长度','肾重量（单侧）','阑尾长度','直肠长度','肺弹性回缩力','气管分叉角度']],
     ['🧬 遗传基因',['染色体数目','血型系统（常用）','血红蛋白亚基']],
-    ['💪 肌肉系统',['前臂肌前群','前臂肌后群','手肌（单侧）','小腿三头肌','眼外肌（单侧）','咀嚼肌（双侧）','股四头肌（单侧）','大腿后群肌（单侧）','小腿前群肌（单侧）','小腿外侧群肌（单侧）','鮐骨（人体最大的籽骨）','全身骨骼肌数量','人体最长肌肉（缝妆肌）']],
-    ['❤️ 循环系统',['心腔数量','心脏瓣膜数量','心包层数','冠状动脉主干数','主动脉弓分支数','心脏每天卓动次数','全身血液量','红细胞寿命','心脏重量','安静时心率','白细胞分类种数']],
-    ['👁️ 感觉器官',['眼球壁层数','听小骨（单侧）','外耳道长度','耳蜗蜗管圈数','大唾液腺对数','味蕾总数','眼球前后径','正常眼压','半规管数量（单侧）','鼓膜面积']],
+    ['💪 肌肉系统',['前臂肌前群','前臂肌后群','手肌（单侧）','小腿三头肌','眼外肌（单侧）','咀嚼肌（双侧）','股四头肌（单侧）','大腿后群肌（单侧）','小腿前群肌（单侧）','小腿外侧群肌（单侧）','髌骨（人体最大的籽骨）','全身骨骼肌数量','人体最长肌肉（缝匠肌）']],
+    ['❤️ 循环系统',['心腔数量','心脏瓣膜数量','心包层数','冠状动脉主干数','主动脉弓分支数','心脏每天搏动次数','全身血液量','红细胞寿命','心脏重量','安静时心率','白细胞分类种数','心脏纤维环钙化程度']],
+    ['👁️ 感觉器官',['眼球壁层数','听小骨（单侧）','外耳道长度','耳蜗蜗管圈数','大唾液腺对数','味蕾总数','眼球前后径','正常眼压','半规管数量（单侧）','鼓膜面积','咽鼓管倾斜角度','鼓膜厚度','晶状体弹性','听阈频率范围']],
   ];
   for(const[catName,parts]of cats){
     const div=document.createElement('div');
@@ -975,7 +1013,10 @@ function renderHandbook(){
       for(const cat of Object.values(EXAM_DATA)){
         for(const item of cat.items){
           if(item.part===part){
-            itemsHtml+='<div class="handbook-item"><span>'+part+'</span><span class="h-val">'+item.normal+(item.unit||'')+'</span></div>';
+            var hbVal=item.normal+(item.unit||'');
+            var an=AGE_NORMALS[part];
+            if(an){hbVal='<span style="color:var(--accent);font-size:9px">儿童:'+an.child+'</span><span style="color:var(--text-dim);font-size:9px"> | </span><span style="color:var(--gold);font-size:9px">青壮年:'+an.young+'</span><span style="color:var(--text-dim);font-size:9px"> | </span><span style="color:var(--warn);font-size:9px">老年:'+an.elderly+'</span>';}
+            itemsHtml+='<div class="handbook-item"><span>'+part+'</span><span class="h-val">'+hbVal+'</span></div>';
           }
         }
       }
