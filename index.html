@@ -383,7 +383,7 @@ const EXAM_DATA = {
     name: 'X光骨骼', icon: '🦴',
     items: [
       { part:'肋骨', normal:24, unit:'根', nd:'人类有12对肋骨（7真肋+5假肋），共24根。', ad:'患者只有{0}根肋骨——外星人的胸廓与人类不同！' },
-      { part:'椎骨总数', normal:33, unit:'块', nd:'脊柱由33块椎骨组成：颈7+胸12+腰5+骶5+尾4（成年后骶尾椎融合，但计数仍为33）。', ad:'患者有{0}块椎骨——外星脊柱节段总数与人类不同！' },
+      { part:'椎骨总数', normal:33, unit:'块', nd:'脊柱由33块椎骨组成：颈7+胸12+腰5+骶5+尾4（成年后骶尾椎愈合成骶骨和尾骨，计为26块）。', ad:'患者有{0}块椎骨——外星脊柱节段总数与人类不同！' },
       { part:'颈椎', normal:7, unit:'块', nd:'人类颈椎恒为7块（C1-C7），这是哺乳动物的保守特征——长颈鹿也是7块！', ad:'患者有{0}块颈椎——颈椎数目异常，不是人类！' },
       { part:'胸椎', normal:12, unit:'块', nd:'人类胸椎为12块（T1-T12），与12对肋骨一一对应。', ad:'患者有{0}块胸椎——胸椎数不对，肋骨也会跟着少！' },
       { part:'腰椎', normal:5, unit:'块', nd:'人类腰椎为5块（L1-L5），承重最大。某些人可有腰椎骶化或骶椎腰化导致数目改变。', ad:'患者有{0}块腰椎——腰椎数目异常，脊柱承重结构不同！' },
@@ -551,6 +551,18 @@ const ALIEN_VALUES = {
   archBranch: [2,4,5], heartBeat: ['约6万','约7万','约8万','约12万','约15万'],
   bloodVol: ['2~3','3~3.5','6~7','7~8'], rbcLife: [80,90,150,180],
   sternum: [0,2,3], clavicle: [1,3,4], scapula: [1,3,4], spineCurve: [2,3,5,6], footArch: [1,2,4,5], pelvis: [2,3,5,6], cerebellum: [100,120,180,200], brainstem: [10,12,18,20], sympatheticGanglia: [18,20,25,28], stomachCapacity: ['0.3~0.5','0.5~0.8','2~3','3~4'], lungWeight: ['600~800','800~1000','1400~1600','1500~1800'], spleenWeight: [80,100,200,250], pancreasWeight: [50,60,100,120], gallbladderVol: ['10~20','20~30','80~100','100~150'], kidneyLength: ['6~8','8~9','13~15','15~18'], kidneyWeight: [70,90,160,200], appendixLength: ['2~4','3~5','9~12','10~15'], rectumLength: ['6~9','9~11','16~20','18~22'], heartWeight: [180,200,400,450], restingHR: ['40~50','50~55','110~130','130~150'], wbcTypes: [3,4,6,7], totalSkeletalMuscle: ['约500','约550','约700','约800'], sartorius: [1,3,4], eyeDiameter: ['约1.8','约2.0','约2.8','约3.0'], eyePressure: ['5~8','8~10','22~28','25~30'], semicircularCanal: [2,4,5], eardrumArea: ['20~40','40~50','100~120','120~150'],
+  hearingRange: ['10~15000','10~20000','20~25000','30~30000'],
+  pinealCalc: ['0%','<1%','约10%','约20%'],
+  thymusRemnant: ['0','1~2','20~30','50~60'],
+  heartRingCalc: ['重度','极度','无钙化','全程钙化'],
+  eardrumThick: ['厚','极厚','薄','异常薄'],
+  lensElasticity: ['极差','无弹性','超弹性','异常好'],
+  eustachianAngle: ['0~5°','5~10°','50~60°','60~70°'],
+  discHeight: ['15~18','18~22','2~5','20~25'],
+  lungElasticity: ['极弱','无弹性','极强','异常强'],
+  tracheaAngle: ['30~40°','40~50°','100~120°','120~140°'],
+  boneOrganic: ['约5%','约10%','约80%','约90%'],
+  hipCartilage: ['早熟愈合','延迟愈合','未愈合','异常愈合'],
   eyeLayer: [2,4,5], earOssicle: [2,4,5],
   earCanal: ['1.0~2.0','1.5~2.0','4.0~5.0','4.5~5.5'], cochlea: [1.5,2.0,3.0,3.5],
   salivaGland: [2,4,5], tasteBud: ['500~1000','1000~1500','9000~12000','10000~15000'],
@@ -583,6 +595,18 @@ const PART_ALIEN_KEY = {
   '眼球前后径':'eyeDiameter','正常眼压':'eyePressure','半规管数量（单侧）':'semicircularCanal','鼓膜面积':'eardrumArea',
   '眼球壁层数':'eyeLayer','听小骨（单侧）':'earOssicle','外耳道长度':'earCanal',
   '耳蜗蜗管圈数':'cochlea','大唾液腺对数':'salivaGland','味蕾总数':'tasteBud',
+  '听阈频率范围':'hearingRange',
+  '松果体钙化检出率':'pinealCalc',
+  '胸腺残余重量':'thymusRemnant',
+  '心脏纤维环钙化程度':'heartRingCalc',
+  '鼓膜厚度':'eardrumThick',
+  '晶状体弹性':'lensElasticity',
+  '咽鼓管倾斜角度':'eustachianAngle',
+  '椎间盘高度（L3/4）':'discHeight',
+  '肺弹性回缩力':'lungElasticity',
+  '气管分叉角度':'tracheaAngle',
+  '骨有机物比例（随龄变化）':'boneOrganic',
+  '髋臼Y形软骨愈合状态':'hipCartilage',
 };
 
 // ============================================================
@@ -590,6 +614,7 @@ const PART_ALIEN_KEY = {
 // ============================================================
 
 const AGE_NORMALS = {
+  "椎骨总数":{child:"33",young:"26",elderly:"26"},
   "牙齿":{child:"20",young:"28~32",elderly:"20~28"},
   "外耳道长度":{child:"1.5~2.5",young:"2.5~3.5",elderly:"3.5~4.0"},
   "脊髓末端位置":{child:"L3下缘",young:"L1~L2下缘",elderly:"L1下缘"},
@@ -724,12 +749,20 @@ function updateToolStates(){
   });
 }
 
-function addReportCard(toolKey,item,isAlien){
+function getAgeAdjustedNormal(item, age) {
+  const ageNorm = AGE_NORMALS[item.part];
+  if (!ageNorm) return item.normal;
+  const group = getAgeGroup(age);
+  const key = ['child','young','elderly'][group];
+  return ageNorm[key] || item.normal;
+}
+
+function addReportCard(toolKey,item,isAlien,age){
   const area=document.getElementById('reportArea');
   const placeholder=area.querySelector('.report-placeholder');
   if(placeholder) placeholder.remove();
 
-  const norm = item.normal;
+  const norm = getAgeAdjustedNormal(item, age);
   const val = isAlien ? item._alienVal : norm;
   const valStr = item.unit ? val+item.unit : val;
   const cat = EXAM_DATA[toolKey];
@@ -860,7 +893,7 @@ function useTool(toolKey){
   setTimeout(()=>{
     const isAbnormal=item._alienVal!==undefined;
     state.reports.push({toolKey,item,isAlien,isAbnormal});
-    addReportCard(toolKey,item,isAbnormal);
+    addReportCard(toolKey,item,isAbnormal,state.currentPatientAge);
     updateToolStates();
   }, 400);
 }
@@ -898,7 +931,7 @@ function decide(action){
 
   // Build comparison table
   function compRow(rp){
-    const normVal=rp.item.normal+rp.item.unit;
+    const normVal=getAgeAdjustedNormal(rp.item, state.currentPatientAge)+rp.item.unit;
     if(rp.isAbnormal){
       const foundVal=rp.item._alienVal+rp.item.unit;
       return '<div class="ct-item"><span class="ct-part">'+rp.item.part+'</span><span class="ct-found">'+foundVal+'</span><span class="ct-correct">← 正常应为 '+normVal+'</span></div>';
@@ -997,7 +1030,7 @@ function renderHandbook(){
   const container=document.getElementById('handbookContent');
   container.innerHTML='';
   const cats=[
-        ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骰椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','颅骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跗骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','胸骨','锁骨','肩胛骨','脊柱生理弯曲','足弓数量','骨盆骨块数','椎间盘高度（L3/4）','骨有机物比例（随龄变化）','髋臼Y形软骨愈合状态']],
+        ['🦴 骨骼系统',['肋骨','椎骨总数','颈椎','胸椎','腰椎','骶椎','指骨（双手）','腕骨（双手）','牙齿','全身骨骼','颅骨（不含听小骨）','听小骨（双侧）','掌骨（双手）','跗骨（双足）','趾骨（双足）','上肢骨（双侧合计）','下肢骨（双侧合计）','胸骨','锁骨','肩胛骨','脊柱生理弯曲','足弓数量','骨盆骨块数','椎间盘高度（L3/4）','骨有机物比例（随龄变化）','髋臼Y形软骨愈合状态']],
     ['🧠 神经脊髓',['脊神经对数','脑神经对数','脊髓长度','脊髓末端位置','椎间盘数量','脑室数量','脑脊液总量','大脑重量','脊髓节段','小脑重量','脑干长度','交感干神经节','松果体钙化检出率','胸腺残余重量']],
     ['🔬 内脏系统',['小肠长度','食管长度','气管长度','结肠长度','肺叶数量','肝脏重量','十二指肠长度','男性尿道长度','女性尿道长度','气管软骨环数','肾锥体数量（单侧）','输尿管长度','胃容量','肺重量（双侧）','脾脏重量','胰腺重量','胆囊容量','肾长度','肾重量（单侧）','阑尾长度','直肠长度','肺弹性回缩力','气管分叉角度']],
     ['🧬 遗传基因',['染色体数目','血型系统（常用）','血红蛋白亚基']],
